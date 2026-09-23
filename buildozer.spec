@@ -1,6 +1,6 @@
 [app]
 
-title = ТехПрофи
+title = ТехПрофи Beta
 
 package.name = testov
 package.domain = ru.testov
