@@ -44,38 +44,96 @@
 
             Widget:
                 size_hint_y: None
-                height: dp(12)
+                height: dp(8)
 
             Image:
                 source: 'assets/logo.png'
                 size_hint_y: None
-                height: dp(125)
+                height: dp(115)
                 fit_mode: 'contain'
 
             Label:
-                text: 'ТехПрофи'
+                text: 'ТехПрофи Beta'
                 color: .08, .07, .06, 1
-                font_size: '32sp'
+                font_size: '31sp'
                 bold: True
                 size_hint_y: None
-                height: dp(48)
+                height: dp(46)
                 halign: 'center'
                 valign: 'middle'
                 text_size: self.size
+
+            # =====================================================
+            # BETA BADGE
+            # =====================================================
+
+            BoxLayout:
+                size_hint_y: None
+                height: dp(38)
+                size_hint_x: None
+                width: min(dp(300), self.parent.width)
+                pos_hint: {'center_x': .5}
+                padding: dp(10), dp(5)
+
+                canvas.before:
+                    Color:
+                        rgba: .48, .36, .25, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(10)]
+
+                Label:
+                    text: 'BETA • ДЕМОНСТРАЦИОННАЯ ВЕРСИЯ'
+                    color: 1, .98, .95, 1
+                    font_size: '12sp'
+                    bold: True
+                    halign: 'center'
+                    valign: 'middle'
+                    text_size: self.size
 
             Label:
                 text: 'Знания. Безопасность. Профессионализм.'
                 color: .22, .19, .16, 1
                 font_size: '14sp'
                 size_hint_y: None
-                height: dp(34)
+                height: dp(30)
                 halign: 'center'
                 valign: 'middle'
                 text_size: self.size
 
+            # =====================================================
+            # ОПИСАНИЕ BETA
+            # =====================================================
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: beta_info.texture_size[1] + dp(26)
+                padding: dp(14), dp(11)
+
+                canvas.before:
+                    Color:
+                        rgba: .99, .975, .94, 1
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(12)]
+
+                Label:
+                    id: beta_info
+                    text: 'В Beta-версии доступна ограниченная база вопросов.\\nФункциональность приложения не ограничена.'
+                    color: .30, .25, .20, 1
+                    font_size: '13sp'
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    halign: 'center'
+                    valign: 'middle'
+
             Widget:
                 size_hint_y: None
-                height: dp(8)
+                height: dp(4)
 
             TextInput:
                 id: name
@@ -172,7 +230,6 @@
 
         # =================================================
         # ВЕРХНЯЯ ОБЛАСТЬ
-        # Высота рассчитывается автоматически.
         # =================================================
 
         BoxLayout:
@@ -190,17 +247,13 @@
                     size: self.size
                     radius: [dp(14)]
 
-            # ---------------------------------------------
-            # Режим + номер вопроса
-            # ---------------------------------------------
-
             BoxLayout:
                 size_hint_y: None
                 height: dp(42)
                 spacing: dp(8)
 
                 Label:
-                    text: 'Контрольное\nтестирование' if app.mode == 'контроль' else 'Обучение'
+                    text: 'Контрольное\\nтестирование' if app.mode == 'контроль' else 'Обучение'
                     color: .08, .07, .06, 1
                     font_size: '17sp'
                     bold: True
@@ -215,10 +268,6 @@
                     halign: 'right'
                     valign: 'middle'
                     text_size: self.size
-
-            # ---------------------------------------------
-            # Прогресс
-            # ---------------------------------------------
 
             BoxLayout:
                 size_hint_y: None
@@ -239,10 +288,6 @@
                         size: self.width * root.progress_ratio, self.height
                         radius: [dp(5)]
 
-            # ---------------------------------------------
-            # Процент выполнения
-            # ---------------------------------------------
-
             Label:
                 text: root.progress_percent
                 color: .28, .23, .19, 1
@@ -252,11 +297,6 @@
                 halign: 'right'
                 valign: 'middle'
                 text_size: self.size
-
-            # ---------------------------------------------
-            # Таймер
-            # Показывается только в контрольном режиме.
-            # ---------------------------------------------
 
             BoxLayout:
                 orientation: 'vertical'
@@ -331,7 +371,6 @@
 
         # =================================================
         # ПРОКРУЧИВАЕМАЯ ОБЛАСТЬ
-        # Вопрос, ответы, правильный ответ и источник.
         # =================================================
 
         ScrollView:
@@ -345,10 +384,6 @@
                 height: self.minimum_height
                 spacing: dp(12)
                 padding: dp(2), dp(4), dp(2), dp(16)
-
-                # -----------------------------------------
-                # Вопрос
-                # -----------------------------------------
 
                 BoxLayout:
                     orientation: 'vertical'
@@ -376,20 +411,12 @@
                         halign: 'left'
                         valign: 'middle'
 
-                # -----------------------------------------
-                # Ответы
-                # -----------------------------------------
-
                 BoxLayout:
                     id: answers
                     orientation: 'vertical'
                     size_hint_y: None
                     height: self.minimum_height
                     spacing: dp(10)
-
-                # -----------------------------------------
-                # Сообщение / правильный ответ
-                # -----------------------------------------
 
                 Label:
                     text: root.message
@@ -400,10 +427,6 @@
                     height: self.texture_size[1] + dp(14) if root.message else 0
                     halign: 'left'
                     valign: 'middle'
-
-                # -----------------------------------------
-                # Источник
-                # -----------------------------------------
 
                 BoxLayout:
                     orientation: 'vertical'
@@ -449,7 +472,6 @@
 
         # =================================================
         # НИЖНЯЯ ОБЛАСТЬ
-        # Высота также рассчитывается автоматически.
         # =================================================
 
         BoxLayout:
@@ -466,10 +488,6 @@
                     pos: self.pos
                     size: self.size
 
-            # ---------------------------------------------
-            # Ответ
-            # ---------------------------------------------
-
             Button:
                 text: 'Ответ'
                 color: 1, .98, .95, 1
@@ -484,10 +502,6 @@
                 disabled: app.mode != 'обучение'
                 on_release: root.show_correct()
 
-            # ---------------------------------------------
-            # Завершение тестирования
-            # ---------------------------------------------
-
             Button:
                 text: 'Завершить тестирование'
                 color: .30, .22, .17, 1
@@ -498,10 +512,6 @@
                 size_hint_y: None
                 height: dp(46)
                 on_release: root.finish()
-
-            # ---------------------------------------------
-            # Навигация
-            # ---------------------------------------------
 
             BoxLayout:
                 size_hint_y: None
@@ -765,6 +775,36 @@
                 height: self.minimum_height
                 spacing: dp(12)
                 padding: dp(2), dp(6), dp(2), dp(20)
+
+                # =================================================
+                # ИНФОРМАЦИЯ О BETA
+                # =================================================
+
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: beta_settings_label.texture_size[1] + dp(30)
+                    padding: dp(14), dp(12)
+
+                    canvas.before:
+                        Color:
+                            rgba: .99, .965, .90, 1
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [dp(12)]
+
+                    Label:
+                        id: beta_settings_label
+                        text: '[b]ТехПрофи Beta[/b]\\nДоступна часть банка вопросов. Функциональность приложения не ограничена.'
+                        markup: True
+                        color: .30, .23, .17, 1
+                        font_size: '13sp'
+                        size_hint_y: None
+                        height: self.texture_size[1]
+                        text_size: self.width, None
+                        halign: 'left'
+                        valign: 'middle'
 
                 Label:
                     text: 'Источники вопросов'
