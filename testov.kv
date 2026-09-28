@@ -220,7 +220,7 @@
                 spacing: dp(8)
 
                 Label:
-                    text: 'Контрольное\\nтестирование' if app.mode == 'контроль' else 'Обучение'
+                    text: 'Контрольное\nтестирование' if app.mode == 'контроль' else 'Обучение'
                     color: .08, .07, .06, 1
                     font_size: '17sp'
                     bold: True
@@ -763,7 +763,7 @@
 
                     Label:
                         id: beta_settings_label
-                        text: '[b]ТехПрофи Beta[/b]\\nДоступна часть банка вопросов. Функциональность приложения не ограничена.'
+                        text: '[b]ТехПрофи Beta[/b]\nНастройки доступны только для просмотра.'
                         markup: True
                         color: .30, .23, .17, 1
                         font_size: '13sp'
@@ -929,6 +929,8 @@
                 TextInput:
                     id: pass_percent
                     text: str(int(app.pass_percent))
+                    disabled: True
+                    opacity: .55
                     font_name: 'AppArial'
                     font_size: '18sp'
                     multiline: False
