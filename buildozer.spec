@@ -2,7 +2,7 @@
 
 title = ТехПрофи Beta
 
-package.name = testov
+package.name = testovbeta
 package.domain = ru.testov
 
 source.dir = .
