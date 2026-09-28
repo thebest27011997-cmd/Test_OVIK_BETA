@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build Android APK Beta
 
 on:
   workflow_dispatch:
@@ -228,10 +228,6 @@ jobs:
             "24333f8a63b6825ea9c5514f83c2829b004d1fee" \
             > "$SDK_DIR/licenses/android-sdk-preview-license"
 
-          echo "================================"
-          echo "SDKMANAGER CHECK"
-          echo "================================"
-
           test -x "$SDKMANAGER"
           test -x "$SDK_DIR/tools/bin/sdkmanager"
 
@@ -251,16 +247,9 @@ jobs:
             "platforms;android-35" \
             "build-tools;35.0.0"
 
-          test -f \
-            "$SDK_DIR/platforms/android-35/android.jar"
-
-          test -x \
-            "$SDK_DIR/build-tools/35.0.0/aidl"
-
-          test -x \
-            "$SDK_DIR/platform-tools/adb"
-
-          test -d "$SDK_DIR/licenses"
+          test -f "$SDK_DIR/platforms/android-35/android.jar"
+          test -x "$SDK_DIR/build-tools/35.0.0/aidl"
+          test -x "$SDK_DIR/platform-tools/adb"
 
           echo "ANDROID SDK CHECK PASSED"
 
@@ -295,25 +284,28 @@ jobs:
           pwd
           ls -la
 
+          test -f buildozer.spec
+          test -f main.py
+          test -f testov.kv
+          test -f data/questions.json
+          test -f assets/icon.png
+          test -f assets/logo.png
+
           echo "--------------------------------"
           echo "buildozer.spec"
           echo "--------------------------------"
-
-          test -f buildozer.spec
 
           grep -E \
             "^(title|package.name|package.domain|source.dir|requirements|android.api|android.minapi|android.archs|p4a.branch)" \
             buildozer.spec || true
 
           echo "--------------------------------"
-          echo "Python files"
+          echo "Beta package check"
           echo "--------------------------------"
 
-          find . \
-            -maxdepth 2 \
-            -type f \
-            -name "*.py" \
-            -print
+          grep -q "^package.name = testovbeta$" buildozer.spec
+
+          echo "BETA PACKAGE CHECK PASSED"
 
 
       # ============================================================
@@ -358,9 +350,6 @@ jobs:
           echo "FINAL ANDROID CHECK"
           echo "================================"
 
-          echo "SDK:"
-          echo "$SDK_DIR"
-
           test -d "$SDK_DIR"
           test -x "$SDKMANAGER"
           test -x "$SDK_DIR/tools/bin/sdkmanager"
@@ -385,12 +374,12 @@ jobs:
       # 12. BUILD APK
       # ============================================================
 
-      - name: Build APK
+      - name: Build Beta APK
         run: |
           set -o pipefail
 
           echo "================================"
-          echo "STARTING APK BUILD"
+          echo "STARTING BETA APK BUILD"
           echo "================================"
 
           buildozer -v android debug 2>&1 | tee build.log
@@ -404,7 +393,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: build-log
+          name: build-log-beta
           path: build.log
           if-no-files-found: ignore
           retention-days: 7
@@ -453,7 +442,7 @@ jobs:
             -ls
 
           echo "================================"
-          echo "APK BUILD SUCCESS"
+          echo "BETA APK BUILD SUCCESS"
           echo "================================"
 
 
@@ -461,10 +450,10 @@ jobs:
       # 16. RENAME APK
       # ============================================================
 
-      - name: Rename APK
+      - name: Rename Beta APK
         run: |
           echo "================================"
-          echo "RENAMING APK"
+          echo "RENAMING BETA APK"
           echo "================================"
 
           APK_FILE=$(find bin -maxdepth 1 -type f -name "*.apk" | head -n 1)
@@ -474,7 +463,7 @@ jobs:
             exit 1
           fi
 
-          NEW_APK="bin/TEST_OVIK_${{ github.run_number }}.apk"
+          NEW_APK="bin/TEST_OVIK_BETA_${{ github.run_number }}.apk"
 
           mv "$APK_FILE" "$NEW_APK"
 
@@ -487,7 +476,7 @@ jobs:
           test -f "$NEW_APK"
 
           echo "================================"
-          echo "APK RENAME SUCCESS"
+          echo "BETA APK RENAME SUCCESS"
           echo "================================"
 
 
@@ -495,10 +484,10 @@ jobs:
       # 17. UPLOAD APK
       # ============================================================
 
-      - name: Upload APK
+      - name: Upload Beta APK
         uses: actions/upload-artifact@v4
         with:
-          name: TEST_OVIK_${{ github.run_number }}
-          path: bin/TEST_OVIK_${{ github.run_number }}.apk
+          name: TEST_OVIK_BETA_${{ github.run_number }}
+          path: bin/TEST_OVIK_BETA_${{ github.run_number }}.apk
           if-no-files-found: error
           retention-days: 14
