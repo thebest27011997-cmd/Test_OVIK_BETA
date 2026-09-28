@@ -102,39 +102,6 @@
                 valign: 'middle'
                 text_size: self.size
 
-            # =====================================================
-            # ОПИСАНИЕ BETA
-            # =====================================================
-
-            BoxLayout:
-                orientation: 'vertical'
-                size_hint_y: None
-                height: beta_info.texture_size[1] + dp(26)
-                padding: dp(14), dp(11)
-
-                canvas.before:
-                    Color:
-                        rgba: .99, .975, .94, 1
-                    RoundedRectangle:
-                        pos: self.pos
-                        size: self.size
-                        radius: [dp(12)]
-
-                Label:
-                    id: beta_info
-                    text: 'В Beta-версии доступна ограниченная база вопросов.\\nФункциональность приложения не ограничена.'
-                    color: .30, .25, .20, 1
-                    font_size: '13sp'
-                    size_hint_y: None
-                    height: self.texture_size[1]
-                    text_size: self.width, None
-                    halign: 'center'
-                    valign: 'middle'
-
-            Widget:
-                size_hint_y: None
-                height: dp(4)
-
             TextInput:
                 id: name
                 hint_text: 'Фамилия и инициалы'
@@ -847,6 +814,7 @@
                         size_hint_x: None
                         width: dp(44)
                         color: .20, .16, .12, 1
+                        disabled: True
                         on_active: root.toggle_all_sources(self.active)
 
                     Label:
@@ -863,6 +831,8 @@
                     orientation: 'vertical'
                     size_hint_y: None
                     height: self.minimum_height
+                    disabled: True
+                    opacity: .55
                     spacing: dp(7)
 
                 Widget:
@@ -883,6 +853,8 @@
                 TextInput:
                     id: question_count
                     text: str(int(app.question_count))
+                    disabled: True
+                    opacity: .55
                     font_name: 'AppArial'
                     font_size: '18sp'
                     multiline: False
@@ -919,6 +891,8 @@
                 TextInput:
                     id: test_minutes
                     text: str(int(app.test_minutes))
+                    disabled: True
+                    opacity: .55
                     font_name: 'AppArial'
                     font_size: '18sp'
                     multiline: False
@@ -989,20 +963,15 @@
 
                 Button:
                     text: 'Сохранить настройки'
-                    color: .08, .07, .06, 1
+                    color: .45, .43, .40, 1
                     font_size: '17sp'
                     bold: True
                     background_normal: ''
                     background_down: ''
-                    background_color: .83, .73, .61, 1
+                    background_color: .82, .82, .80, 1
                     size_hint_y: None
                     height: dp(60)
-                    on_release:
-                        root.save_settings(
-                        question_count.text,
-                        test_minutes.text,
-                        pass_percent.text
-                        )
+                    disabled: True
 
                 Button:
                     text: 'Назад'
