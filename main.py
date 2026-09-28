@@ -36,7 +36,7 @@ KV_PATH = BASE / "testov.kv"
 FONT_PATH = BASE / "fonts" / "Arial.ttf"
 FONT_BOLD_PATH = BASE / "fonts" / "Arial-Bold.ttf"
 
-APP_NAME = "ТехПрофи"
+APP_NAME = "ТехПрофи Beta"
 
 DEFAULT_NUM = 25
 DEFAULT_MINUTES = 15
@@ -998,6 +998,7 @@ class Test(Screen):
                 row.add_widget(
                     checkbox
                 )
+
                 row.add_widget(
                     label
                 )
@@ -1100,6 +1101,7 @@ class Test(Screen):
                 row.add_widget(
                     checkbox
                 )
+
                 row.add_widget(
                     label
                 )
@@ -1245,10 +1247,6 @@ class Test(Screen):
             [],
         )
 
-        # -------------------------------------------------
-        # ОДИН / НЕСКОЛЬКО
-        # -------------------------------------------------
-
         if question_type in (
             "один",
             "несколько",
@@ -1283,10 +1281,6 @@ class Test(Screen):
 
                 checkbox.disabled = True
 
-        # -------------------------------------------------
-        # ТЕКСТОВЫЙ
-        # -------------------------------------------------
-
         else:
             correct_text = (
                 display_correct_answer(
@@ -1307,7 +1301,6 @@ class Test(Screen):
             if self.input is not None:
                 self.input.disabled = True
 
-        # Показываем ровно поле source.
         self.show_source()
 
     # =====================================================
@@ -1780,26 +1773,23 @@ class ResultsHistory(Screen):
                     )
                 )
 
+            # BETA:
+            # Кнопка отображается, но недоступна.
             button = Button(
                 text="Подробнее",
                 font_name="AppArial",
                 font_size="14sp",
                 color=(
-                    1, .98, .95, 1
+                    .45, .43, .40, 1
                 ),
                 background_normal="",
                 background_down="",
                 background_color=(
-                    .48, .36, .25, 1
+                    .82, .82, .80, 1
                 ),
                 size_hint_y=None,
                 height=dp(42),
-            )
-
-            button.bind(
-                on_release=
-                lambda _btn, i=index:
-                self.open_details(i)
+                disabled=True,
             )
 
             card.add_widget(
@@ -2310,6 +2300,8 @@ class SettingsScreen(Screen):
                 ),
             )
 
+            # BETA:
+            # Источники только для просмотра.
             checkbox = CheckBox(
                 active=(
                     source_id
@@ -2321,6 +2313,7 @@ class SettingsScreen(Screen):
                 color=(
                     .20, .16, .12, 1
                 ),
+                disabled=True,
             )
 
             label = Label(
@@ -3009,8 +3002,6 @@ class TechProfiApp(App):
     def _correct_for_result(
         question,
     ):
-        # Для текстового вопроса возвращается
-        # только первый эталонный вариант.
         return display_correct_answer(
             question
         )
